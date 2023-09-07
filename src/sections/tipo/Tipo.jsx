@@ -1,14 +1,63 @@
 import './Tipo.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import api from '../../api/Api'
 
 const Tipo = () => {
+    // Variaveis
     const [descricao, setDescricao] = useState("")
     const [dados, setDados] = useState([])
+
+    //executar ao renderizar a pagina
+    useEffect(() => {
+        pegarTodos()
+    },[])
+    // Funções
+    const pegarTodos = async () => {
+        try {
+            const response = await api.get('/tipos')
+            if (response.data) {
+                console.log(response.data)
+                setDados(response.data.data)
+            } else {
+                console.log("Array vazio")
+                setDados([])
+            }
+        } catch (error) {
+            console.log("Erro ao pegar todos: ", error)
+        }
+
+    }
+    const salvar = async (e) => {
+        e.preventDefault()
+        try {
+            if (descricao.length > 0) {
+                const item = { descricao }
+
+                const response = await api.post('/tipos', item)
+                if (response.data) {
+                    console.log(response.data)
+                } else {
+                    console.log('Salvar retorno vazio.')
+                }
+            }
+        } catch (error) {
+            console.log("Erro ao salvar tipo: ", error)
+        }
+    }
+
+    const atualizar = (e) => {
+        e.preventDefault()
+    }
+
+    const deletar = () => {
+
+    }
+
     return (
         <div>
             <h2>Tipos</h2>
             <div>
-                <form>
+                <form onSubmit={salvar}>
                     <div>
                         <label>Descricao</label>
                         <input type='text'
