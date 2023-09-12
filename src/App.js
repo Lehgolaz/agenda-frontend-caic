@@ -1,5 +1,6 @@
 import './App.css';
-import Tipo from './sections/tipo/Tipo'
+import Tipo from '../src/sections/tipo/Tipo'
+
 
 function App() {
   return (
